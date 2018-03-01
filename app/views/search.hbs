@@ -3,14 +3,43 @@
 <!DOCTYPE html>
 <html>
 	<head>
+	    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 		<title>Google News Search</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		
+		    <!-- Custom styles for this template -->
+    		<link href="/assets/css/jumbotron.css" rel="stylesheet">
 		</head>
 	<body>
+
+
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Veritask</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExample02">
+        <ul class="navbar-nav mr-auto">
+           <li class="nav-item">
+            <a class="nav-link" href="/savedArticles">Saved Articles</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-md-0">
+        <a class="btn btn-outline-primary" href="/dashboard">Dashboard</a>
+        &nbsp
+        	<a class="btn btn-outline-primary" href="/logout">Sign out</a>
+        </form>
+      </div>
+    </nav>
+
 		<div class="container">
 			<!-- Jumbotron -->
 			<div class="jumbotron">
-				<h1>Google News Search</h1>
+				<h1>Article Search</h1>
 							<form id="your_form" onsubmit="yourFunction()">
 								<div class="form-group">
 	    							<label for="search">Search Term:</label>
@@ -43,9 +72,11 @@
 				<div class="col-lg-12">
 					<!-- Results Panel -->
 					<div class="panel panel-default">
+					{{#if this.articles}}
 						<div class="panel-heading">
 							<h3 class="panel-title">Search Results</h3>
 						</div>
+					{{/if}}
 						<div class="panel-body" id="wellSection">
 								{{#each articles as |value key|}}
 								<div class="card">
@@ -65,7 +96,7 @@
     								Url: <a href="{{this.url}}" class="url card-link">{{this.url}}</a>
   									</div>
   									<div class="card-body">
-    									<button name="cardBtn" class="car btn btn-primary" type="button" onClick="reply_click(this.id)">Flag as Fake</button> 
+    									<button name="cardBtn" class="car btn btn-primary" type="button">Flag as Fake</button> 
   									</div>
   								 <input type="hidden" name="urlImg" value="{{this.urlToImage}}">
 								 <input type="hidden" name="title" value="{{this.title}}">
@@ -80,132 +111,30 @@
 
 								{{/each}}
 						</div>
+						{{#if this.articles}}
+							<form id="form2" onsubmit="yourFunction()">
 						<nav aria-label="Page navigation example">
   							<ul class="pagination justify-content-center">
     							<li class="page-item disabled">
       								<a class="page-link" href="#" tabindex="-1">Previous</a>
     							</li>
-    							<li class="page-item"><a class="page-link" value="1" onClick="calcPaginate(this.id)">1</a></li>
-    							<li class="page-item"><a class="page-link" value="2" onClick="calcPaginate(this.id)">2</a></li>
-    							<li class="page-item"><a class="page-link" value="3" onClick="calcPaginate(this.id)">3</a></li>
+    							<li class="page-item"><a class="page-link" href="#">1</a></li>
+    							<li class="page-item"><a class="page-link">2</a></li>
+    							<li class="page-item"><a class="page-link">3</a></li>
     							<li class="page-item">
       								<a class="page-link" href="#">Next</a>
     							</li>
   							</ul>
 						</nav>
+						</form>
+						{{/if}}
 				</div>
 				</div>
 			</div>
 		</div>
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-		<script>
-				// Read a page's GET URL variables and return them as an associative array.
-			function getUrlVars()
-			{
-    			var vars = [], hash;
-    			var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    			for(var i = 0; i < hashes.length; i++)
-    			{
-        			hash = hashes[i].split('=');
-        			vars.push(hash[0]);
-        			vars[hash[0]] = hash[1];
-    			}
-    			return vars;
-			}
-
-			var search = getUrlVars()["search"];
-			var pageSize = getUrlVars()["pageSize"];
-			var pageQs = getUrlVars()["page"];
-			var jsonCount = document.querySelectorAll('.card').length;
-			console.log(jsonCount);
-			console.log(search);
-			console.log(pageSize);
-			console.log(pageQs);
-
-			$(".page-link").each(function(i) {
-    			$(this).attr("id", "url" + i);
-			});
-
-			function calcPaginate(clicked_id) {
-				alert(clicked_id);
-				let pageLink = clicked_id.split("url")[1];
-				let pagePassed;
-				if (pageLink = pageQs) {
-					pagePassed = pageLink;
-				} else if (pageLink > pageQs) {
-					pagePassed = pageLink;
-					$(".page-link").each(function(i) {
-						let j = pageLink + 1;
-						$(this).attr("id", "url" + j);
-						$(this).attr("value", j);
-						$(this).text(j);
-					});
-				}
-			}
-
-			function yourFunction() {
-				// let startYear = $("#startYear").val().trim();
-				// let endYear = $("#endYear").val().trim();
-
-			let searchTerm = $("#search").val().trim();
-			let numRecords = $("#numRecords").val().trim();
-    		var action_src = "/fetch&search=" + searchTerm + "&pageSize=" + numRecords + "&page=" + pageQs;
-    		var your_form = document.getElementById('your_form');
-    		your_form.action = action_src;
-			}
-
-			var items = $(".card").length;
-			console.log("items: " + items);
-			$(".card").each(function(i) {
-    			$(this).attr("id", "card" + i);
-			});
-			$(".car").each(function(i) {
-    			$(this).attr("id", "btn" + i);
-			});
-			$("input[name=urlImg]").each(function(i) {
-    			$(this).attr("id", "urlImg" + i);
-			});
-			$("input[name=title]").each(function(i) {
-    			$(this).attr("id", "title" + i);
-			});
-			$("input[name=description]").each(function(i) {
-    			$(this).attr("id", "desc" + i);
-			});
-			$("input[name=source]").each(function(i) {
-    			$(this).attr("id", "source" + i);
-			});
-			$("input[name=author]").each(function(i) {
-    			$(this).attr("id", "author" + i);
-			});
-			$("input[name=pub]").each(function(i) {
-    			$(this).attr("id", "pub" + i);
-			});
-			$("input[name=url]").each(function(i) {
-    			$(this).attr("id", "url" + i);
-			});
-			function reply_click(clicked_id)
-				{
-				    alert(clicked_id);
-				    var i = clicked_id.split("btn")[1];
-				    let urlImg = $("#urlImg" + i).val();
-				    console.log("Url Image: " + urlImg);
-				    let title = $("#title" + i).val();
-				    console.log("Title: " + title);
-				    let desc = $("#desc" + i).val();
-				    console.log("Description: " + desc);
-				    let source = $("#source" + i).val();
-				    console.log("Source: " + source);
-				    let author = $("#author" + i).val();
-				    console.log("Author: " + author);
-				    let pub = $("#pub" + i).val();
-				    console.log("Published At: " + pub);
-				    let url = $("#url" + i).val();
-				    console.log("Url: " + url);
-					console.log($(".card" + i).children('img').attr('src'));
-
-				}
-		</script>
+		<script src="/assets/js/script.js"></script>
 	</body>
 </html>

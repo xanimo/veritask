@@ -1,6 +1,6 @@
 module.exports = function(sequelize, Sequelize) {
  
-    var user = sequelize.define('user', {
+    var User = sequelize.define('user', {
  
         id: {
             autoIncrement: true,
@@ -48,15 +48,17 @@ module.exports = function(sequelize, Sequelize) {
         }
  
  
-    }, {
-        classMethods: {
-            // User may have many articles
-            associate: function (models) {
-                User.hasMany(models.article)
-            }
-        }
-    });
+    }
+    // , {
+    //     classMethods: {
+    //         // User may have many articles
+    //         associate: function (models) {
+    //             User.hasMany(models.db.article)
+    //         }
+    //     }
+    // }
+    );
  
-    return user;
+    return User;
  
 }

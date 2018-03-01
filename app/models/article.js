@@ -1,6 +1,6 @@
 module.exports = function (sequelize, DataTypes) {
 
-  var article = sequelize.define('article',
+  var Article = sequelize.define('article',
   {
     source: {
       type: DataTypes.STRING,
@@ -34,19 +34,21 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     }
-  }, {
-      classMethods: {
-        associate: function (models) {
-          article.belongsTo(models.user, {
-            onDelete: "CASCADE",
-            foreignKey: {
-              allowNull: true
-            }
-          });
-        }
-      }
-    });
+  }
+  // , {
+  //     classMethods: {
+  //       associate: function (models) {
+  //         article.belongsTo(models.db.user, {
+  //           onDelete: "CASCADE",
+  //           foreignKey: {
+  //             allowNull: true
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }
+    );
 
-  return article;
+  return Article;
 
 };

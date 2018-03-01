@@ -5,8 +5,6 @@ var bodyParser = require('body-parser');
 var env = require('dotenv').load();
 var exphbs = require('express-handlebars');
 var request = require('request'); 
-var NewsAPI = require('newsapi');
-var newsapi = new NewsAPI('353a8fddcaba4e7dafde4210fc1dc13c');
 var path = require('path');
 
 var app = express();
@@ -18,7 +16,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
  
-app.use(express.static(__dirname + '/public')); 
+app.use(express.static(process.cwd() + '/app/public'));
 
 // For Passport
 app.use(session({
@@ -45,26 +43,26 @@ app.get('/', function(req, res) {
  
 });
  
-app.get('/search&search=:search&pageSize=:pageSize&page=:page', function(req, res) {
-	var search = req.params.search;
-	var from = req.params.from;
-	var to = req.params.to;
-	var pageSize = req.params.pageSize;
-	var page = req.params.page;
-	newsapi.v2.everything({
-		q: search,
-		from: from,
-		to: to,
-		pageSize: pageSize,
-		page: page,
-		language: 'en'
-	}).then(function(response) {
-		console.log(response);
-		return response;
-	}).then(function(data) {
-		console.log(data);
-		res.render("search", data);
-	});
+// app.get('/search&search=:search&pageSize=:pageSize&page=:page', function(req, res) {
+// 	var search = req.params.search;
+// 	var from = req.params.from;
+// 	var to = req.params.to;
+// 	var pageSize = req.params.pageSize;
+// 	var page = req.params.page;
+// 	newsapi.v2.everything({
+// 		q: search,
+// 		from: from,
+// 		to: to,
+// 		pageSize: pageSize,
+// 		page: page,
+// 		language: 'en'
+// 	}).then(function(response) {
+// 		console.log(response);
+// 		return response;
+// 	}).then(function(data) {
+// 		console.log(data);
+// 		res.render("search", data);
+// 	});
     // var search = req.params.search;
     // var pageSize = req.params.pageSize;
     // var apiKey = "353a8fddcaba4e7dafde4210fc1dc13c";
@@ -72,7 +70,7 @@ app.get('/search&search=:search&pageSize=:pageSize&page=:page', function(req, re
     //   res.render("search", JSON.parse(body));
     //   //res.json(JSON.parse(body));
     // });
-});
+
 
 //Models
 var models = require(path.join(__dirname, "./app/models"));

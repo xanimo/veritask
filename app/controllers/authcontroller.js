@@ -1,4 +1,4 @@
-var db = require("../models");
+var db = require("../models/");
 var NewsAPI = require('newsapi');
 var newsapi = new NewsAPI('353a8fddcaba4e7dafde4210fc1dc13c');
 
@@ -16,15 +16,23 @@ exports.signin = function(req, res) {
  
 }
 
+// dashboard landing
 exports.dashboard = function(req, res) {
  
     res.render('dashboard');
  
 }
 
+// dashboard > saved articles
+exports.savedArticles = function(req, res) {
+
+	res.render('savedArticles');
+
+}
+
 exports.findAllUsers = function(req, res) {
     db.user.findAll({
-      include: [db.article]
+      // include: [db.article]
     }).then(function(dbUser) {
       res.json(dbUser);
     });
@@ -34,8 +42,9 @@ exports.findOneUser = function(req, res) {
 	    db.user.findOne({
       where: {
         id: req.params.id
-      },
-      include: [db.article]
+      }
+      // ,
+      // include: [db.article]
     }).then(function(dbUser) {
       res.json(dbUser);
     });
@@ -66,8 +75,9 @@ exports.findAllArticles = function(req, res) {
     // We set the value to an array of the models we want to include in a left outer join
     // In this case, just db.user
     db.article.findAll({
-      where: query,
-      include: [db.user]
+      where: query
+      // ,
+      // include: [db.user]
     }).then(function(dbArticle) {
       res.json(dbArticle);
     });
@@ -80,8 +90,9 @@ exports.findOneArticle = function(req, res) {
     db.article.findOne({
       where: {
         id: req.params.id
-      },
-      include: [db.user]
+      }
+      // ,
+      // include: [db.user]
     }).then(function(dbArticle) {
       res.json(dbArticle);
     });
