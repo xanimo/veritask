@@ -43,11 +43,11 @@
 			}
 
 			function yourFunction(page) {
-				// let startYear = $("#startYear").val().trim();
-				// let endYear = $("#endYear").val().trim();
 			let pageQs = page;
 			let searchTerm = $("#search").val().trim();
 			let numRecords = $("#numRecords").val().trim();
+			let startYear = $("#startYear").val().trim();
+			let endYear = $("#endYear").val().trim();
     		var action_src = "/search&search=" + searchTerm + "&pageSize=" + numRecords + "&page=" + pageQs;
     		var your_form = document.getElementById('your_form');
     		your_form.action = action_src;
@@ -135,6 +135,10 @@
 				    publishDate: $("#pub" + i).val(),
 				    isFake: true 
 				};
+
+				localStorage.setItem("data", newFake);
+
+				console.log(localStorage.getItem("data", newFake));
 
 				$.ajax("/articles", {
 					type: "POST",
